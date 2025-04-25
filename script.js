@@ -10,13 +10,14 @@ let isOn = false;
 let clickedCoordinates = null;
 let etatPage = "base" // Trois état : base, scenario, naviguer
 let routeTriGlobal = null; // Variable accessible globalement
-
+let etatPage2 = "base"
 
 
 let dataLoadedResolver;
 const dataIsLoaded = new Promise(resolve => {
     dataLoadedResolver = resolve;
 });
+
 
 // Fonction pour charger les données une seule fois
 async function loadData() {
@@ -62,6 +63,18 @@ async function chgt_carte() {
             paint: { 'line-color': '#666666', 'line-width': 0.8 }
         });
     });
+
+
+
+    
+
+    map.on('zoomend', () => {
+        if (etatPage2 === 'base') {
+            onEtatPageChange("naviguer");
+          }
+      });
+
+    
 }
 
 
@@ -328,11 +341,19 @@ async function calcul_distance() {
     }
 
     // contenu du message html
+    if ( Math.round(routesTri[0].routeData.routes[0].distance) < 1000 ) {
+        distanceTexte = Math.round(routesTri[0].routeData.routes[0].distance)
+        metrique = "mètres"
+    }
+    else{
+        distanceTexte = Math.round(routesTri[0].routeData.routes[0].distance / 1000)
+        metrique = "km"
+    }
+
     const message = `
     <hr>
-    <h2><u>Professionnel de santé le plus proche :</u></h2>
-    <p class="texte-petit">Profession : <strong>${routesTri[0].medecin.profession}</strong></p>
-    <p class="texte-petit">Distance : <strong>${Math.round((routesTri[0].routeData.routes[0].distance / 1000) * 100) / 100} km</strong></p>
+    <h1> 📍 ${routesTri[0].medecin.profession} le plus proche :</h1>
+    <p class="texte-petit">Distance : <strong>${distanceTexte} ${metrique}</strong></p>
     <p class="texte-petit">Nom : <strong>${capitalizeWords(routesTri[0].medecin.nom)}</strong></p>
     <p class="texte-petit">Adresse : <strong>${capitalizeWords(routesTri[0].medecin.adresse)}</strong></p>
     <p class="texte-petit">Téléphone : <strong>${capitalizeWords(routesTri[0].medecin.telephone)}</strong></p>
@@ -409,16 +430,20 @@ function filterAndDisplayClusters() {
             'circle-color': [
                 'step',
                 ['get', 'point_count'],
-                '#baebe5', 10,
-                '#2bbeae', 50,
+                '#baebe5', 20,
+                '#90CBC4', 70,
+                '#65ABA3', 300,
+                '#3B8B82', 1000,
                 '#106b61'
             ],
             'circle-radius': [
                 'step',
                 ['get', 'point_count'],
-                13, 10, // Si le cluster contient entre 1 et 9 points, le rayon est de 15 pixels
-                19, 50, // Si le cluster contient entre 10 et 49 points, le rayon passe à 20 pixels
-                25 // Si le cluster contient 50 points ou plus, le rayon est de 30 pixels
+                13, 20, // Si le cluster contient entre 1 et 9 points, le rayon est de 15 pixels
+                19, 70,
+                25, 300,
+                31, 1000,
+                37,
             ]
         }
     });
@@ -438,7 +463,7 @@ function filterAndDisplayClusters() {
             'text-color': [
                 'step',
                 ['get', 'point_count'],
-                '#000000', 50, // Seuil : si point_count >= 50
+                '#000000', 70, // Seuil : si point_count >= 50
                 '#FFFFFF'  // Blanc pour les grands clusters
             ]
         }
@@ -452,7 +477,13 @@ function filterAndDisplayClusters() {
         filter: ['!', ['has', 'point_count']], // Affiche uniquement les points non clusterisés
         paint: {
             'circle-color': '#106b61',
-            'circle-radius': 5
+            'circle-radius': [
+                'interpolate',
+                ['linear'],
+                ['zoom'],
+                11, 5,
+                20, 16
+    ],
         }
     });
 
@@ -704,12 +735,18 @@ function onEtatPageChange(etat) {
                 zoom: 6.7, // zoom
                 duration: 2000
             })
+            
+            map.once('moveend', () => {
+                etatPage2 = "base"
+              });
+
 
             break;
 
         case "naviguer":
             // Code pour afficher/cacher les bons éléments
             console.log("→ mode navigation activé");
+            etatPage2 = "naviguer"
 
             // Pour afficher
             toggleLayers([
@@ -727,7 +764,6 @@ function onEtatPageChange(etat) {
             ], "none");
 
             if (!map.getLayer('clusters_filtre')) {
-                console.log("prout")
                 filterAndDisplayClusters()
             };
 
@@ -736,6 +772,8 @@ function onEtatPageChange(etat) {
         case "scenario":
             // Code pour activer les couches de scénario, afficher la fenêtre, etc.
             console.log("→ affichage du scénario");
+            etatPage2 = "scenario"
+
             // Pour afficher
             toggleLayers([
                 "itineraireLePlusCourt",

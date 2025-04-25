@@ -249,6 +249,14 @@ body {
     font-family: Poppins, sans-serif;
 }
 
+#fenetre-scenario h1 {
+    font-size: 20px;
+    color: #63395b;
+    font-family: Poppins, sans-serif;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
 #search-commune {
     width: 80%;
     padding: 10px;
@@ -555,6 +563,7 @@ body {
     transition: background-color 0.3s ease, transform 0.2s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
+  
   
   .bouton_iti:hover:not(:disabled) {
     background-color: #106b61;

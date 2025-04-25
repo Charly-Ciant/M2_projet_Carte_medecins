@@ -40,7 +40,7 @@
     <div id="credits">
       <hr>
       <p class="texte-petit">Ce site est une cartographie web de la localisation des <strong>professionnels de santé libéraux</strong> de moins de 60 ans dans le <strong>Grand-Ouest</strong> (Bretagne, Pays de la Loire, Normandie). </p>
-      <p class="texte-petit">Ce projet a été réalisé en 2025 dans le cadre des cours de Webmapping du master <strong>SIGAT</strong> à Rennes par <strong>Charly CIANTAR, Sacha LEVASSEUR, Tanguy POIRIER et Lamine GUEYE.</strong> </p>
+      <p class="texte-petit">Ce projet a été réalisé en 2025 dans le cadre des cours de Webmapping du <a href="https://sites-formations.univ-rennes2.fr/mastersigat/" target="_blank">master SIGAT</a> à Rennes par <strong>Charly CIANTAR, Sacha LEVASSEUR, Tanguy POIRIER et Lamine GUEYE.</strong> </p>
       <p class="texte-petit">Les données sont issues de l’<strong>Annuaire Santé de la CPAM</strong> disponible sur <a href="https://public.opendatasoft.com/explore/dataset/medecins/table/" target="_blank">OpenDataSoft</a> et le fond de carte d’<a href="https://openmaptiles.geo.data.gouv.fr/" target="_blank">OpenMapTiles</a> basé sur OSM. Le site et les données sont hébergés sur GitHub. La carte se base sur la librairie opensource <a href=" https://maplibre.org/" target="_blank">MapLibreGL JS</a>. La bibliothèque Javascript <a href="https://jquery.com/" target="_blank">JQuery</a> et le calculateur d’itinéraire <a href="https://project-osrm.org/" target="_blank">Project OSRM</a> sont aussi utilisés.</p>
         
     </div>
@@ -55,7 +55,9 @@
     </select>
 
     <h2>2. Placez le point de départ en cliquant sur le bouton "Placer un point" puis en cliquant sur la carte.</h2> 
-    <h2>3. Cliquez sur le bouton "Récupérer le point" puis calculez l'itinéraire</h2>
+    <h2>3. Cliquez sur le bouton "Récupérer le point".</h2>
+    <h2>4. Calculez l'itinéraire.</h2>
+
 
     <div id="boutons_iti">
     <button id="toggleButton" class="bouton_iti">Placer un point</button>
@@ -75,7 +77,7 @@
 
 
   <div id="fenetre-naviguer" class="fenetre">
-    <h2>Type de médecins</h2>
+    <h2>Sélectionnez un type de médecin :</h2>
     <select id="paramChoixProf_naviguer" class="menu_deroul">
       <option value="">Tous les médecins</option>
     </select>
@@ -83,7 +85,7 @@
 
 
 
-    <h2>Zoomer sur une ville</h2>
+    <h2>Zoomez sur une ville :</h2>
     <div class="buttons-container">
       <button class="city-btn" id='Rennes'>Rennes</button>
       <button class="city-btn" id='Nantes'>Nantes</button>
